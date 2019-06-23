@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seecen.dao.CommentInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.seecen.pojo.Comment" >
+        <id column="CMID" property="cmid" jdbcType="DECIMAL" />
+        <result column="CMCONTENT" property="cmcontent" jdbcType="VARCHAR" />
+        <result column="CMTIME" property="cmtime" jdbcType="TIMESTAMP" />
+        <result column="POSTSID" property="postsid" jdbcType="DECIMAL" />
+        <collection property="posts" ofType="com.seecen.pojo.Posts">
+            <id column="POSTSID" property="postsid" jdbcType="DECIMAL" />
+            <result column="POSTSTITLE" property="poststitle" jdbcType="VARCHAR" />
+            <result column="POSTSCONTENT" property="postscontent" jdbcType="VARCHAR" />
+            <result column="RELEASETIME" property="releasetime" jdbcType="TIMESTAMP" />
+            <result column="PICTURE" property="picture" jdbcType="VARCHAR" />
+            <result column="STATE" property="state" jdbcType="DECIMAL" />
+            <result column="LIKENUMINT" property="likenumint" jdbcType="DECIMAL" />
+            <result column="POSTSHEAT" property="postsheat" jdbcType="DECIMAL" />
+            <result column="COMMENTID" property="commentid" jdbcType="DECIMAL" />
+            <result column="POSTSTYPE" property="poststype" jdbcType="DECIMAL" />
+            <result column="USERID" property="userid" jdbcType="DECIMAL" />
+        </collection>
+    </resultMap>
+    <select id="selectCommentAndPosts" parameterType="com.seecen.pojo.Comment" resultMap="BaseResultMap">
+        SELECT * from COMMENTTABLE left join POSTS
+        on COMMENTTABLE.POSTSID = POSTS.POSTSID WHERE COMMENTTABLE.POSTSID = #{postsid} ORDER BY CMTIME DESC
+    </select>
+
+
+</mapper>

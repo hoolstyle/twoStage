@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seecen.dao.PostsMapper" >
+  <resultMap id="BaseResultMap" type="com.seecen.pojo.Posts" >
+    <id column="POSTSID" property="postsid" jdbcType="DECIMAL" />
+    <result column="POSTSTITLE" property="poststitle" jdbcType="VARCHAR" />
+    <result column="POSTSCONTENT" property="postscontent" jdbcType="VARCHAR" />
+    <result column="RELEASETIME" property="releasetime" jdbcType="TIMESTAMP" />
+    <result column="PICTURE" property="picture" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="DECIMAL" />
+    <result column="LIKENUMINT" property="likenumint" jdbcType="DECIMAL" />
+    <result column="POSTSHEAT" property="postsheat" jdbcType="DECIMAL" />
+    <result column="COMMENTID" property="commentid" jdbcType="DECIMAL" />
+    <result column="POSTSTYPE" property="poststype" jdbcType="DECIMAL" />
+    <result column="USERID" property="userid" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    POSTSID, POSTSTITLE, POSTSCONTENT, RELEASETIME, PICTURE, STATE, LIKENUMINT, POSTSHEAT, 
+    COMMENTID, POSTSTYPE, USERID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.seecen.pojo.PostsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from POSTS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from POSTS
+    where POSTSID = #{postsid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from POSTS
+    where POSTSID = #{postsid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.seecen.pojo.PostsExample" >
+    delete from POSTS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.seecen.pojo.Posts" >
+    insert into POSTS (POSTSID, POSTSTITLE, POSTSCONTENT, 
+      RELEASETIME, PICTURE, STATE, 
+      LIKENUMINT, POSTSHEAT, COMMENTID, 
+      POSTSTYPE, USERID)
+    values (#{postsid,jdbcType=DECIMAL}, #{poststitle,jdbcType=VARCHAR}, #{postscontent,jdbcType=VARCHAR}, 
+      #{releasetime,jdbcType=TIMESTAMP}, #{picture,jdbcType=VARCHAR}, #{state,jdbcType=DECIMAL}, 
+      #{likenumint,jdbcType=DECIMAL}, #{postsheat,jdbcType=DECIMAL}, #{commentid,jdbcType=DECIMAL}, 
+      #{poststype,jdbcType=DECIMAL}, #{userid,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.seecen.pojo.Posts" >
+    insert into POSTS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        POSTSID,
+      <if test="poststitle != null" >
+        POSTSTITLE,
+      </if>
+      <if test="postscontent != null" >
+        POSTSCONTENT,
+      </if>
+      <if test="releasetime != null" >
+        RELEASETIME,
+      </if>
+      <if test="picture != null" >
+        PICTURE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="likenumint != null" >
+        LIKENUMINT,
+      </if>
+      <if test="postsheat != null" >
+        POSTSHEAT,
+      </if>
+      <if test="commentid != null" >
+        COMMENTID,
+      </if>
+      <if test="poststype != null" >
+        POSTSTYPE,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      SEQPOSTS.nextval,
+      <if test="poststitle != null" >
+        #{poststitle,jdbcType=VARCHAR},
+      </if>
+      <if test="postscontent != null" >
+        #{postscontent,jdbcType=VARCHAR},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="likenumint != null" >
+        #{likenumint,jdbcType=DECIMAL},
+      </if>
+      <if test="postsheat != null" >
+        #{postsheat,jdbcType=DECIMAL},
+      </if>
+      <if test="commentid != null" >
+        #{commentid,jdbcType=DECIMAL},
+      </if>
+      <if test="poststype != null" >
+        #{poststype,jdbcType=DECIMAL},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.seecen.pojo.PostsExample" resultType="java.lang.Integer" >
+    select count(*) from POSTS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update POSTS
+    <set >
+      <if test="record.postsid != null" >
+        POSTSID = #{record.postsid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.poststitle != null" >
+        POSTSTITLE = #{record.poststitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postscontent != null" >
+        POSTSCONTENT = #{record.postscontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releasetime != null" >
+        RELEASETIME = #{record.releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.picture != null" >
+        PICTURE = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        STATE = #{record.state,jdbcType=DECIMAL},
+      </if>
+      <if test="record.likenumint != null" >
+        LIKENUMINT = #{record.likenumint,jdbcType=DECIMAL},
+      </if>
+      <if test="record.postsheat != null" >
+        POSTSHEAT = #{record.postsheat,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commentid != null" >
+        COMMENTID = #{record.commentid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.poststype != null" >
+        POSTSTYPE = #{record.poststype,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userid != null" >
+        USERID = #{record.userid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update POSTS
+    set POSTSID = #{record.postsid,jdbcType=DECIMAL},
+      POSTSTITLE = #{record.poststitle,jdbcType=VARCHAR},
+      POSTSCONTENT = #{record.postscontent,jdbcType=VARCHAR},
+      RELEASETIME = #{record.releasetime,jdbcType=TIMESTAMP},
+      PICTURE = #{record.picture,jdbcType=VARCHAR},
+      STATE = #{record.state,jdbcType=DECIMAL},
+      LIKENUMINT = #{record.likenumint,jdbcType=DECIMAL},
+      POSTSHEAT = #{record.postsheat,jdbcType=DECIMAL},
+      COMMENTID = #{record.commentid,jdbcType=DECIMAL},
+      POSTSTYPE = #{record.poststype,jdbcType=DECIMAL},
+      USERID = #{record.userid,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.seecen.pojo.Posts" >
+    update POSTS
+    <set >
+      <if test="poststitle != null" >
+        POSTSTITLE = #{poststitle,jdbcType=VARCHAR},
+      </if>
+      <if test="postscontent != null" >
+        POSTSCONTENT = #{postscontent,jdbcType=VARCHAR},
+      </if>
+      <if test="releasetime != null" >
+        RELEASETIME = #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picture != null" >
+        PICTURE = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="likenumint != null" >
+        LIKENUMINT = #{likenumint,jdbcType=DECIMAL},
+      </if>
+      <if test="postsheat != null" >
+        POSTSHEAT = #{postsheat,jdbcType=DECIMAL},
+      </if>
+      <if test="commentid != null" >
+        COMMENTID = #{commentid,jdbcType=DECIMAL},
+      </if>
+      <if test="poststype != null" >
+        POSTSTYPE = #{poststype,jdbcType=DECIMAL},
+      </if>
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where POSTSID = #{postsid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.seecen.pojo.Posts" >
+    update POSTS
+    set POSTSTITLE = #{poststitle,jdbcType=VARCHAR},
+      POSTSCONTENT = #{postscontent,jdbcType=VARCHAR},
+      RELEASETIME = #{releasetime,jdbcType=TIMESTAMP},
+      PICTURE = #{picture,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=DECIMAL},
+      LIKENUMINT = #{likenumint,jdbcType=DECIMAL},
+      POSTSHEAT = #{postsheat,jdbcType=DECIMAL},
+      COMMENTID = #{commentid,jdbcType=DECIMAL},
+      POSTSTYPE = #{poststype,jdbcType=DECIMAL},
+      USERID = #{userid,jdbcType=DECIMAL}
+    where POSTSID = #{postsid,jdbcType=DECIMAL}
+  </update>
+</mapper>

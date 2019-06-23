@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seecen.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.seecen.pojo.User">
+    <id column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_PSW" jdbcType="VARCHAR" property="userPsw" />
+    <result column="USER_SEX" jdbcType="DECIMAL" property="userSex" />
+    <result column="USER_AGE" jdbcType="DECIMAL" property="userAge" />
+    <result column="USER_QQ" jdbcType="VARCHAR" property="userQq" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="USER_STATUS" jdbcType="DECIMAL" property="userStatus" />
+    <result column="USER_FLAG" jdbcType="DECIMAL" property="userFlag" />
+    <result column="USER_IMG" jdbcType="VARCHAR" property="userImg" />
+    <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
+    <result column="CLASS_ID" jdbcType="DECIMAL" property="classId" />
+    <result column="USER_REMARK" jdbcType="VARCHAR" property="userRemark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    USER_ID, USER_NAME, USER_PSW, USER_SEX, USER_AGE, USER_QQ, CREATE_TIME, USER_STATUS, 
+    USER_FLAG, USER_IMG, ROLE_ID, CLASS_ID, USER_REMARK
+  </sql>
+  <select id="selectByExample" parameterType="com.seecen.pojo.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_USER
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_USER
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.seecen.pojo.UserExample">
+    delete from T_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.seecen.pojo.User">
+    insert into T_USER (USER_ID, USER_NAME, USER_PSW, 
+      USER_SEX, USER_AGE, USER_QQ, 
+      CREATE_TIME, USER_STATUS, USER_FLAG, 
+      USER_IMG, ROLE_ID, CLASS_ID, 
+      USER_REMARK)
+    values (#{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, #{userPsw,jdbcType=VARCHAR}, 
+      #{userSex,jdbcType=DECIMAL}, #{userAge,jdbcType=DECIMAL}, #{userQq,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=DECIMAL}, #{userFlag,jdbcType=DECIMAL}, 
+      #{userImg,jdbcType=VARCHAR}, #{roleId,jdbcType=DECIMAL}, #{classId,jdbcType=DECIMAL}, 
+      #{userRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.seecen.pojo.User">
+    insert into T_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userPsw != null">
+        USER_PSW,
+      </if>
+      <if test="userSex != null">
+        USER_SEX,
+      </if>
+      <if test="userAge != null">
+        USER_AGE,
+      </if>
+      <if test="userQq != null">
+        USER_QQ,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS,
+      </if>
+      <if test="userFlag != null">
+        USER_FLAG,
+      </if>
+      <if test="userImg != null">
+        USER_IMG,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="classId != null">
+        CLASS_ID,
+      </if>
+      <if test="userRemark != null">
+        USER_REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsw != null">
+        #{userPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="userAge != null">
+        #{userAge,jdbcType=DECIMAL},
+      </if>
+      <if test="userQq != null">
+        #{userQq,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="userFlag != null">
+        #{userFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="userImg != null">
+        #{userImg,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=DECIMAL},
+      </if>
+      <if test="userRemark != null">
+        #{userRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.seecen.pojo.UserExample" resultType="java.lang.Integer">
+    select count(*) from T_USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update T_USER
+    <set>
+      <if test="record.userId != null">
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userName != null">
+        USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPsw != null">
+        USER_PSW = #{record.userPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSex != null">
+        USER_SEX = #{record.userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userAge != null">
+        USER_AGE = #{record.userAge,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userQq != null">
+        USER_QQ = #{record.userQq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userStatus != null">
+        USER_STATUS = #{record.userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userFlag != null">
+        USER_FLAG = #{record.userFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userImg != null">
+        USER_IMG = #{record.userImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleId != null">
+        ROLE_ID = #{record.roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.classId != null">
+        CLASS_ID = #{record.classId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userRemark != null">
+        USER_REMARK = #{record.userRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update T_USER
+    set USER_ID = #{record.userId,jdbcType=DECIMAL},
+      USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      USER_PSW = #{record.userPsw,jdbcType=VARCHAR},
+      USER_SEX = #{record.userSex,jdbcType=DECIMAL},
+      USER_AGE = #{record.userAge,jdbcType=DECIMAL},
+      USER_QQ = #{record.userQq,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      USER_STATUS = #{record.userStatus,jdbcType=DECIMAL},
+      USER_FLAG = #{record.userFlag,jdbcType=DECIMAL},
+      USER_IMG = #{record.userImg,jdbcType=VARCHAR},
+      ROLE_ID = #{record.roleId,jdbcType=DECIMAL},
+      CLASS_ID = #{record.classId,jdbcType=DECIMAL},
+      USER_REMARK = #{record.userRemark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.seecen.pojo.User">
+    update T_USER
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPsw != null">
+        USER_PSW = #{userPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null">
+        USER_SEX = #{userSex,jdbcType=DECIMAL},
+      </if>
+      <if test="userAge != null">
+        USER_AGE = #{userAge,jdbcType=DECIMAL},
+      </if>
+      <if test="userQq != null">
+        USER_QQ = #{userQq,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS = #{userStatus,jdbcType=DECIMAL},
+      </if>
+      <if test="userFlag != null">
+        USER_FLAG = #{userFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="userImg != null">
+        USER_IMG = #{userImg,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        ROLE_ID = #{roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="classId != null">
+        CLASS_ID = #{classId,jdbcType=DECIMAL},
+      </if>
+      <if test="userRemark != null">
+        USER_REMARK = #{userRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.seecen.pojo.User">
+    update T_USER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_PSW = #{userPsw,jdbcType=VARCHAR},
+      USER_SEX = #{userSex,jdbcType=DECIMAL},
+      USER_AGE = #{userAge,jdbcType=DECIMAL},
+      USER_QQ = #{userQq,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      USER_STATUS = #{userStatus,jdbcType=DECIMAL},
+      USER_FLAG = #{userFlag,jdbcType=DECIMAL},
+      USER_IMG = #{userImg,jdbcType=VARCHAR},
+      ROLE_ID = #{roleId,jdbcType=DECIMAL},
+      CLASS_ID = #{classId,jdbcType=DECIMAL},
+      USER_REMARK = #{userRemark,jdbcType=VARCHAR}
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+
+</mapper>

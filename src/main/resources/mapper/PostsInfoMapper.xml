@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seecen.dao.PostsInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.seecen.pojo.Posts" >
+        <id column="POSTSID" property="postsid" jdbcType="DECIMAL" />
+        <result column="POSTSTITLE" property="poststitle" jdbcType="VARCHAR" />
+        <result column="POSTSCONTENT" property="postscontent" jdbcType="VARCHAR" />
+        <result column="RELEASETIME" property="releasetime" jdbcType="TIMESTAMP" />
+        <result column="PICTURE" property="picture" jdbcType="VARCHAR" />
+        <result column="STATE" property="state" jdbcType="DECIMAL" />
+        <result column="LIKENUMINT" property="likenumint" jdbcType="DECIMAL" />
+        <result column="POSTSHEAT" property="postsheat" jdbcType="DECIMAL" />
+        <result column="COMMENTID" property="commentid" jdbcType="DECIMAL" />
+        <result column="POSTSTYPE" property="poststype" jdbcType="DECIMAL" />
+        <result column="USERID" property="userid" jdbcType="DECIMAL" />
+        <collection property="user" ofType="com.seecen.pojo.User">
+        <id column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"  />
+        <result column="USER_PSW" property="userPsw"  />
+        <result column="USER_SEX" property="userSex"  />
+        <result column="USER_AGE" property="userAge"  />
+        <result column="USER_QQ" property="userQq"  />
+        <result column="CREATE_TIME" property="createTime"  />
+        <result column="USER_STATUS" property="userStatus"  />
+        <result column="USER_FLAG" property="userFlag"  />
+        <result column="USER_IMG" property="userImg"  />
+        <result column="ROLE_ID" property="roleId"  />
+        <result column="CLASS_ID" property="classId"  />
+        <result column="USER_REMARK" property="userRemark"  />
+    </collection>
+        <collection property="postType" ofType="com.seecen.pojo.PostType">
+            <id column="TYPEID" property="typeid"/>
+            <result column="TYPENAME" property="typename"  />
+        </collection>
+        <collection property="comment" ofType="com.seecen.pojo.Comment">
+            <id column="CMID" property="cmid"/>
+        <result column="CMCONTENT" property="cmcontent"  />
+        <result column="CMTIME" property="cmtime"  />
+        <result column="POSTSID" property="postsid"  />
+    </collection>
+    </resultMap>
+
+    <select id="findPostsByCondition" resultMap="BaseResultMap" parameterType="com.seecen.pojo.Posts" >
+        select * FROM POSTS  left JOIN POSTTYPE ON posts.POSTSTYPE = POSTTYPE.TYPEID
+        left JOIN COMMENTTABLE ON POSTS.COMMENTID = COMMENTTABLE.CMID
+        left join T_USER ON POSTS.USERID = T_USER.USER_ID
+      <where>
+          <if test="startTime != null">
+              and RELEASETIME &gt;= #{startTime}
+          </if>
+          <if test="endTime != null">
+              and RELEASETIME &lt;= #{endTime}
+          </if>
+          <if test="poststitle != null">
+              and poststitle LIKE '%${poststitle}%'
+          </if>
+      </where>
+        order BY RELEASETIME DESC
+    </select>
+
+    <!--前台用户用显示的数据-->
+    <select id="findPostsByConditionFronts" resultMap="BaseResultMap" parameterType="com.seecen.pojo.Posts" >
+    select * FROM POSTS  left JOIN POSTTYPE ON posts.POSTSTYPE = POSTTYPE.TYPEID
+    left JOIN COMMENTTABLE ON POSTS.COMMENTID = COMMENTTABLE.CMID
+    left join T_USER ON POSTS.USERID = T_USER.USER_ID WHERE STATE = 1
+    ORDER BY POSTS.RELEASETIME DESC
+    </select>
+
+    <!--前台热议的数据-->
+    <select id="findPostsByHot" resultMap="BaseResultMap" parameterType="com.seecen.pojo.Posts">
+        SELECT * from(
+        SELECT rownum rn,a.* from (select * FROM POSTS
+        left JOIN POSTTYPE ON posts.POSTSTYPE = POSTTYPE.TYPEID
+        left JOIN COMMENTTABLE ON POSTS.COMMENTID = COMMENTTABLE.CMID
+        left join T_USER ON POSTS.USERID = T_USER.USER_ID WHERE STATE = 1
+        ORDER by POSTSHEAT DESC )a )b where b.rn &gt;= 0 AND b.rn &lt;= 8
+    </select>
+
+    <select id="selectCountCommentAndPosts" parameterType="com.seecen.pojo.Posts" resultMap="BaseResultMap">
+        SELECT  COUNT(*) AS commentid FROM COMMENTTABLE LEFT JOIN POSTS ON COMMENTTABLE.POSTSID=POSTS.POSTSID
+         where POSTS.POSTSID = #{postsid}
+    </select>
+
+</mapper>
